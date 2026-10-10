@@ -1,8 +1,44 @@
 # Paulista Business World - MVP
 
-Mundo empresarial 3D **fictício e estilizado**, inspirado na Avenida Paulista, com prédios de vários setores, executivos demonstrativos, pontos de interação e um Meeting Hub. Inclui demonstração web independente e gerador de cena Unity compatível com o fluxo de autoria de mundos VRChat.
+Mundo empresarial 3D **fictício e estilizado**, inspirado na Avenida Paulista, com prédios de vários setores, executivos demonstrativos, pontos de interação e um Meeting Hub. O repositório tem três partes:
 
-## 1. Executar no navegador
+| Pasta | O que é |
+|---|---|
+| [`unity-mvp/`](unity-mvp/README.md) | **Jogo Unity 6 jogável** (Windows e WebGL): avatar personalizável, conversas com executivos (Claude ou modo offline), banco de negócios, negociação por regras e modelo local com SQLite e vetores. |
+| `web/` | Demonstração single-player no navegador com Three.js. |
+| `unity/` | Gerador de cena Unity compatível com o fluxo de autoria de mundos VRChat. |
+
+## 1. Jogo Unity (unity-mvp)
+
+Versão principal do MVP. Documentação completa em [`unity-mvp/README.md`](unity-mvp/README.md).
+
+**Requisitos:** Unity Hub + Unity **6000.6.5f1** (outras versões Unity 6 devem funcionar). Para gerar builds, instale os módulos *Windows Build Support* e/ou *WebGL Build Support*.
+
+**Execução rápida (Windows),** a partir da raiz do projeto:
+
+```bat
+run.bat            :: executa o jogo (gera o build Windows se ainda não existir)
+run.bat build      :: gera o build Windows e executa
+run.bat webgl      :: gera o build WebGL e abre em http://localhost:8000
+run.bat editor     :: abre o projeto no Unity Editor
+run.bat full       :: executa em tela cheia
+```
+
+Defina a variável `UNITY_EXE` para usar outra instalação do Unity. No editor, use **Paulista Business World → Abrir cena principal** e pressione **Play**.
+
+**Destaques:**
+
+- 12 empresas fictícias e 12 executivos de terno; seu avatar é personalizável (nome, cargo, empresa e aparência).
+- Conversas livres com IA via Messages API da Anthropic (`claude-opus-5-5`), usando `ANTHROPIC_API_KEY` ou a chave informada no botão **IA**. Sem chave, os executivos respondem em modo offline.
+- Banco de negócios em `unity-mvp/Assets/Resources/business_seed.json`: 48 produtos e serviços, perguntas e respostas por intenção, empresa e setor.
+- Negociação por regras (sem LLM), com preço de reserva, contrapropostas e histórico em **Meus negócios**.
+- Modelo local de perguntas e respostas com vetorização por hashing, busca por similaridade de cosseno e aprendizado com feedback e com as respostas do Claude. Os dados ficam em SQLite no Windows e em JSON/armazenamento do navegador nas demais plataformas.
+
+**Controles:** `W/A/S/D` caminham, `E` conversa com o executivo próximo, `V` alterna 3ª/1ª pessoa, `Shift` corre, `R` reinicia a posição, `P` mostra a visão panorâmica.
+
+> No build WebGL, a chave da API fica no navegador de quem joga. Para publicar para outras pessoas, use um backend/proxy próprio em vez de distribuir uma chave.
+
+## 2. Executar no navegador (demonstração web)
 
 A partir da raiz do projeto:
 
@@ -17,7 +53,7 @@ Acesse http://localhost:8000 no navegador. Requer internet para baixar Three.js 
 
 O navegador fornece **uma demonstração single-player**, não um cliente VRChat. Executivos web são bonecos geométricos animados e **não** avatares reais da plataforma. Convites e reuniões no web são apenas notificações locais sem persistência, calendário, backend, IA ou comunicação por voz.
 
-## 2. Levar a cena para VRChat
+## 3. Levar a cena para VRChat
 
 1. No Windows, instale **VRChat Creator Companion (VCC)**. Crie um projeto do tipo **Worlds**, com Unity na versão indicada pelo VCC. Na documentação consultada em outubro de 2026, a versão indicada é **2022.3.22f1**.
 2. Copie o arquivo `unity/Assets/Editor/PaulistaWorldGenerator.cs` para a pasta `Assets/Editor` do projeto criado pelo VCC.
@@ -36,18 +72,25 @@ O navegador fornece **uma demonstração single-player**, não um cliente VRChat
 - A cena Unity é gerada por script de Editor com primitivas, não é um projeto VRChat já compilado ou publicado. O SDK é obtido através do VCC e não é redistribuído no ZIP.
 - O cenário gerado é de natureza exploratória. Requer avaliação de desempenho, iluminação, materiais, som, navegação, sinalização e otimização antes de publicação pública.
 
-## 3. Estrutura
+## 4. Estrutura
 
 ```
+run.bat                      # Atalho para unity-mvp/run.bat
+unity-mvp/                   # Projeto Unity 6 jogável
+  Assets/Scripts/            # Mundo, avatares, conversas, IA, modelo local, negociação e HUD
+  Assets/Resources/          # business_seed.json (banco inicial de negócios)
+  Assets/Editor/             # Criação da cena e builds
+  run.bat                    # Executar, gerar builds e abrir o editor
+  README.md                  # Documentação do jogo Unity
 web/
-  index.html          # HUD do protótipo
-  main.js             # Cena 3D e interação em Three.js
+  index.html                 # HUD do protótipo
+  main.js                    # Cena 3D e interação em Three.js
 unity/Assets/Editor/
-  PaulistaWorldGenerator.cs  # Gerador Unity
+  PaulistaWorldGenerator.cs  # Gerador de cena para VRChat
 README.md
 ```
 
-## 4. Evolução comercial sugerida
+## 5. Evolução comercial sugerida
 
 Fase 2: mesas com VRCStation, salas privativas, painel de empresas, agendamento real por API e autenticação externa. Fase 3: salas temáticas e palestras, estandes patrocinados, CRM, indicadores de networking com consentimento. Fase 4: personagens corporativos interativos e recomendações, sujeitos às capacidades e políticas de conteúdo do VRChat.
 

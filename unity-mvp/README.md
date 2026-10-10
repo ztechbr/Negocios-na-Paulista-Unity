@@ -104,13 +104,13 @@ Assets/Scripts/
   LocalStore.cs        # Persistência: SQLite (Windows) ou JSON
   LocalModel.cs        # Vetorização, busca, aprendizado, pendentes e derivação com IA
   Negotiation.cs       # Motor de negociação por regras
-Assets/Resources/
-  business_seed.json   # Portfólio, perguntas, respostas e falas de negociação
   WorldBuilder.cs      # Geração procedural da avenida, prédios, museu, executivos e Meeting Hub
   PlayerController.cs  # Caminhada em 1ª pessoa, câmera, clique
   GameHUD.cs           # Interface (IMGUI), agenda local, avisos, minimapa
   InputCompat.cs       # Suporte ao Input System novo e ao Input Manager legado
   Components.cs        # Interactable, Billboard, NpcController
+Assets/Resources/
+  business_seed.json   # Portfólio, perguntas, respostas e falas de negociação
 Assets/Editor/
   ProjectSetup.cs      # Criação da cena e builds
 ```
